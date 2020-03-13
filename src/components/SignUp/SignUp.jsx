@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import FormInput from "../FormInput/";
 import Button from "../Button";
-import { auth, createProfileUserDocument } from "../../firebase/firebase.utils";
 import styles from "./signUp.module.scss";
 
-const SignUp = () => {
+const SignUp = ({ signUpStart }) => {
   const [userInfo, setUserInfo] = useState({
     displayName: "",
     email: "",
@@ -20,22 +19,7 @@ const SignUp = () => {
       alert("passwords don't match");
       return;
     }
-
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      await createProfileUserDocument(user, { displayName });
-      setUserInfo({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    signUpStart({ displayName, email, password });
   };
 
   const handleChange = event => {

@@ -6,30 +6,14 @@ import Shop from "./pages/shop";
 import Header from "./components/Header";
 import SignInSignUp from "./pages/SignUpSignIn";
 import Checkout from "./pages/checkout";
-import { setCurrentUser } from "./redux/user/user.actions";
 import { selecctCurrentUser } from "./redux/user/user.selectors";
-import { auth, createProfileUserDocument } from "./firebase/firebase.utils";
+import { checkUserSession } from "./redux/user/user.actions";
 import "./App.scss";
 
-function App({ setCurrentUser, currentUser }) {
+function App({ currentUser, checkUserSession }) {
   useEffect(() => {
-    const unlisten = auth.onAuthStateChanged(async authUser => {
-      if (authUser) {
-        const userRef = await createProfileUserDocument(authUser);
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        });
-      } else {
-        setCurrentUser(authUser);
-      }
-    });
-    return () => {
-      unlisten();
-    };
-  }, [setCurrentUser]);
+    checkUserSession();
+  }, [checkUserSession]);
 
   const RedirectHomePage = () =>
     currentUser ? <Redirect to="/" /> : <SignInSignUp />;
@@ -52,7 +36,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  checkUserSession: () => dispatch(checkUserSession())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,9 +1,21 @@
 import CollectionOverview from "./CollectionsOverview";
-import { selectCollectionsForPreview } from "../../redux/shop/shop.selectors";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import Spinner from "../../components/Spinner";
+
+import {
+  selectCollectionsForPreview,
+  selectIsCollectionFetching
+} from "../../redux/shop/shop.selectors";
 
 const mapStateToProps = state => ({
-  collections: selectCollectionsForPreview(state)
+  collections: selectCollectionsForPreview(state),
+  isLoading: selectIsCollectionFetching(state)
 });
 
-export default connect(mapStateToProps)(CollectionOverview);
+const CollectionsOverviewContainer = compose(
+  connect(mapStateToProps),
+  Spinner
+)(CollectionOverview);
+
+export default CollectionsOverviewContainer;

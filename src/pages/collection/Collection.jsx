@@ -3,7 +3,7 @@ import CollectionItem from "../../components/collectionItem";
 import styles from "./collection.module.scss";
 
 const Collection = ({ collection }) => {
-  const { title, items } = collection;
+  const { title, items = [] } = collection;
   return (
     <div className={styles["collection-page"]}>
       <h2 className={styles.title}>{title}</h2>

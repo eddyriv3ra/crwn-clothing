@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
-import CollectionsOverview from "../../components/CollectionsOverview";
-import CollectionPage from "../collection";
+import CollectionsOverviewContainer from "../../components/CollectionsOverview";
+import CollectionPageContainer from "../collection";
 import styles from "./shop.module.scss";
 
-const Shop = ({ match }) => {
+const Shop = ({ match, fetchCollectionsStartAsync }) => {
+  useEffect(() => {
+    fetchCollectionsStartAsync();
+  }, [fetchCollectionsStartAsync]);
+
   return (
     <div className={styles["shop-page"]}>
-      <Route exact path={match.path} component={CollectionsOverview} />
-      <Route path={`${match.path}/:categoryId`} component={CollectionPage} />
+      <Route exact path={match.path} component={CollectionsOverviewContainer} />
+      <Route
+        path={`${match.path}/:categoryId`}
+        component={CollectionPageContainer}
+      />
     </div>
   );
 };

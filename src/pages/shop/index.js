@@ -1,3 +1,3 @@
-import Shop from "./Shop";
+import Shop from "./Shop.container";
 
 export default Shop;
